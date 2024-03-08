@@ -7,7 +7,12 @@ const userSchema = new Schema(
     firstName: String,
     email: { type: String, required: "un nom est obligatoire:)", unique: true },
     password: { type: String },
-    roles: [Schema.Types.ObjectId],
+    roles: [
+      {
+        ref: "roles",
+        type: mongoose.Schema.Types.ObjectId,
+      },
+    ],
     refreshToken: String,
   },
   { timestamps: true }

@@ -13,13 +13,13 @@ const exposeController = {
       storedPassword: user.password,
     });
     const tokenPayload = {
+      id: user._id,
       lastName: user.lastName,
       firstName: user.firstName,
       email: user.email,
-      roles: user.roles,
     };
     if (comparePwd) {
-      const token = signJwt({ payload: tokenPayload, expiresIn: "5min" });
+      const token = signJwt({ payload: tokenPayload, expiresIn: "1d" });
       const refreshToken = signJwt({ payload: tokenPayload, expiresIn: "7d" });
       const accessToken = { access_token: token, token_type: "Bearer" };
       const updateRefresh = await usersService.updateUserToken({
@@ -53,10 +53,10 @@ const exposeController = {
     try {
       const decoded = verifyJwt(refreshToken);
       const tokenPayload = {
+        id: user._id,
         lastName: foundUser.lastName,
         firstName: foundUser.firstName,
         email: foundUser.email,
-        roles: foundUser.roles,
       };
       if (decoded.email !== foundUser.email) return res.sendStatus(403);
       const accessToken = signJwt({ payload: tokenPayload, expiresIn: "1d" });

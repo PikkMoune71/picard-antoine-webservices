@@ -10,6 +10,22 @@ const exposeServices = {
       throw error;
     }
   },
+  findOneUserById: async ({ id }) => {
+    try {
+      const findUser = await User.findOne({ _id: id });
+      return findUser;
+    } catch (error) {
+      throw error;
+    }
+  },
+  findOneUserByIdWithRoles: async ({ id }) => {
+    try {
+      const findUser = await User.findOne({ _id: id }).populate("roles");
+      return findUser;
+    } catch (error) {
+      throw error;
+    }
+  },
   findUserByRefreshToken: async ({ refreshToken }) => {
     try {
       const findUser = await User.findOne({ refreshToken });
@@ -44,6 +60,38 @@ const exposeServices = {
       throw error;
     }
   },
+  updateUser: async ({ id, body }) => {
+    const query = {
+      _id: id,
+    };
+    const updateQ = {
+      $set: body,
+    };
+    try {
+      const toUpdate = await User.findOneAndUpdate(query, updateQ, {
+        new: true,
+      });
+      return toUpdate;
+    } catch (error) {
+      throw error;
+    }
+  },
+  patchUser: async ({ id, body }) => {
+    const query = {
+      _id: id,
+    };
+    const updateQ = {
+      $set: body,
+    };
+    try {
+      const toPatch = await User.findOneAndUpdate(query, updateQ, {
+        new: true,
+      });
+      return toPatch;
+    } catch (error) {
+      throw error;
+    }
+  },
   updateUserToken: async ({ userId, refreshToken }) => {
     const query = {
       _id: userId,
@@ -58,6 +106,14 @@ const exposeServices = {
         new: true,
       });
       return toUpdate;
+    } catch (error) {
+      throw error;
+    }
+  },
+  deleteUser: async ({ id }) => {
+    try {
+      const toDelete = await User.findOneAndDelete({ _id: id });
+      return toDelete;
     } catch (error) {
       throw error;
     }

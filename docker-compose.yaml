@@ -1,7 +1,8 @@
 version: "3"
 services:
   nodejs-app:
-    build: ./server
+    build:
+      context: ./server
     container_name: api-rest-picard-antoine
     env_file:
       - .env
@@ -11,9 +12,8 @@ services:
       - redis-cache
     networks:
       - app-network
-    command: npm run dev
     volumes:
-      - ./:/usr/src/app
+      - ./server/:/usr/src/app
   redis-cache:
     container_name: redis
     image: redis:alpine3.16
