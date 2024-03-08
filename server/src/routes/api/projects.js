@@ -4,7 +4,7 @@ import authGard from "#src/middleware/authGard";
 import RBAC from "#src/middleware/rbac";
 const router = express.Router();
 
-router.get("/", authGard.protect, projectsController.allProjects);
+router.get("/", projectsController.allProjects);
 router.post(
   "/",
   [authGard.protect, RBAC.authorizationChecker],
