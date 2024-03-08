@@ -27,7 +27,7 @@ const exposeController = {
     const { body } = req;
     const { id } = req.params;
     try {
-      const toUpdate = await projectsServiceService.updateProject(id, body);
+      const toUpdate = await projectsService.updateProject({ id, body });
 
       return res.json(toUpdate);
     } catch (error) {

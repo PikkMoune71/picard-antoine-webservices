@@ -35,16 +35,18 @@ const exposeServices = {
       throw error;
     }
   },
-  updateProject: async (id, data) => {
+  updateProject: async ({ id, body }) => {
+    const query = {
+      _id: id,
+    };
+    const updateQ = {
+      $set: body,
+    };
     try {
-      const updatedProject = await Projects.findOneAndUpdate(
-        { _id: id },
-        data,
-        {
-          new: true,
-        }
-      );
-      return updatedProject;
+      const toUpdate = await Projects.findOneAndUpdate(query, updateQ, {
+        new: true,
+      });
+      return toUpdate;
     } catch (error) {
       throw error;
     }
