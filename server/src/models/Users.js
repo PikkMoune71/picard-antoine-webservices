@@ -14,6 +14,12 @@ const userSchema = new Schema(
       },
     ],
     refreshToken: String,
+    skills: [
+      {
+        ref: "skills",
+        type: mongoose.Schema.Types.ObjectId,
+      },
+    ],
   },
   { timestamps: true }
 );

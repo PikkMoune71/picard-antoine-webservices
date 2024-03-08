@@ -1,26 +1,29 @@
 import express from "express";
+import skillsController from "#src/controllers/skillsController";
 import authGard from "#src/middleware/authGard";
 import RBAC from "#src/middleware/rbac";
-import rolesController from "#src/controllers/rolesController";
 const router = express.Router();
 
-router.post("/", authGard.protect, rolesController.addNewRoles);
-router.get("/", authGard.protect, rolesController.allRoles);
-router.get("/:id", authGard.protect, rolesController.findOneRole);
+router.get("/", authGard.protect, skillsController.allSkills);
+router.post(
+  "/",
+  [authGard.protect, RBAC.authorizationChecker],
+  skillsController.createSkill
+);
+router.get("/:id", authGard.protect, skillsController.findOneSkill);
 router.put(
   "/:id",
   [authGard.protect, RBAC.authorizationChecker],
-  rolesController.updateRole
+  skillsController.updateSkill
 );
 router.patch(
   "/:id",
   [authGard.protect, RBAC.authorizationChecker],
-  rolesController.patchRole
+  skillsController.patchSkill
 );
 router.delete(
   "/:id",
   [authGard.protect, RBAC.authorizationChecker],
-  rolesController.deleteRole
+  skillsController.deleteSkill
 );
-
 export default router;

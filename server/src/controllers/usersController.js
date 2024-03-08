@@ -2,8 +2,15 @@ import usersService from "#src/services/usersService";
 
 const exposeController = {
   allUsers: async (req, res) => {
+    // const allUsers = await usersService.findAllUsers();
+    // return res.json(allUsers);
+
+    // all users trier par date de creation la plus recente
     const allUsers = await usersService.findAllUsers();
-    return res.json(allUsers);
+    const sortedUsers = allUsers.sort((a, b) => {
+      return b.createdAt - a.createdAt;
+    });
+    return res.json(sortedUsers);
   },
   createUser: async (req, res) => {
     const { body } = req;
