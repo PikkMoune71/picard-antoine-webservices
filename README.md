@@ -7,3 +7,5 @@
 
 À la racine du projet : 
 ```docker compose up --build```
+
+Mettre le .env à la racine du projet.
