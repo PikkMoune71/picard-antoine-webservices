@@ -1,5 +1,6 @@
 import User from "#src/models/Users";
 import bcrypt from "bcryptjs";
+import queryBuilder from "#src/utils/mongoQueryBuilder";
 
 const exposeServices = {
   findOneUserByEmail: async ({ email }) => {
@@ -34,12 +35,18 @@ const exposeServices = {
       throw error;
     }
   },
-  findAllUsers: async () => {
+  findAllUsers: async (query) => {
+    const { filter, projection, options } = queryBuilder.getFindOptions({
+      query,
+    });
+
     try {
-      const allUsers = await User.find();
+      const allUsers = await User.find(filter, projection, options).populate(
+        "skills"
+      );
       return allUsers;
     } catch (error) {
-      throw error;
+      throw new Error(error);
     }
   },
   createUser: async (rawData) => {
@@ -116,6 +123,16 @@ const exposeServices = {
       return toDelete;
     } catch (error) {
       throw error;
+    }
+  },
+  countUsers: async (query) => {
+    const { filter } = queryBuilder.getFindOptions({ query });
+
+    try {
+      const howManyUsers = await User.countDocuments(filter);
+      return howManyUsers;
+    } catch (error) {
+      throw new Error(error);
     }
   },
 };

@@ -16,30 +16,20 @@ const exposeController = {
   },
   findOneSkill: async (req, res) => {
     const { params } = req;
-    const foundSkill = await skillsService.findOneSkillById(params);
+    const foundSkill = await skillsService.findOneSkill(params);
     if (!foundSkill) return res.sendStatus(404);
     return res.json(foundSkill);
   },
   updateSkill: async (req, res) => {
-    const { body } = req;
-    const { id } = req.params;
-    try {
-      const toUpdate = await skillsService.updateSkill({ id, body });
-      return res.json(toUpdate);
-    } catch (error) {
-      return res.sendStatus(400);
-    }
+    const { params, body } = req;
+    const updatedSkill = await skillsService.updateSkill({
+      id: params.id,
+      data: body,
+    });
+    if (!updatedSkill) return res.sendStatus(404);
+    return res.json(updatedSkill);
   },
-  patchSkill: async (req, res) => {
-    const { body } = req;
-    const { id } = req.params;
-    try {
-      const toPatch = await skillsService.patchSkill({ id, body });
-      return res.json(toPatch);
-    } catch (error) {
-      return res.sendStatus(400);
-    }
-  },
+
   deleteSkill: async (req, res) => {
     const { params } = req;
     const deletedSkill = await skillsService.deleteSkill(params);

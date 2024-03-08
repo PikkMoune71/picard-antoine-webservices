@@ -2,7 +2,10 @@ import projectsService from "#src/services/projectsService";
 
 const exposeController = {
   allProjects: async (req, res) => {
-    const allProjects = await projectsService.findAllProjects();
+    const { query } = req;
+    const allProjects = await projectsService.findAllProjects(query);
+    const xCountProjects = await projectsService.countProjects(query);
+    res.set("X-count", xCountProjects);
     return res.json(allProjects);
   },
   createProject: async (req, res) => {
@@ -16,7 +19,7 @@ const exposeController = {
   },
   findOneProject: async (req, res) => {
     const { params } = req;
-    const foundProject = await projectsService.findOneProjectById(params);
+    const foundProject = await projectsService.findOneProject(params);
     if (!foundProject) return res.sendStatus(404);
     return res.json(foundProject);
   },
@@ -24,17 +27,19 @@ const exposeController = {
     const { body } = req;
     const { id } = req.params;
     try {
-      const toUpdate = await projectsService.updateProject({ id, body });
+      const toUpdate = await projectsServiceService.updateProject(id, body);
+
       return res.json(toUpdate);
     } catch (error) {
-      return res.sendStatus(400);
+      // return res.sendStatus(400);
+      return res.json({ error });
     }
   },
   patchProject: async (req, res) => {
     const { body } = req;
     const { id } = req.params;
     try {
-      const toPatch = await projectsService.patchProject({ id, body });
+      const toPatch = await projectsService.patchProject(id, body);
       return res.json(toPatch);
     } catch (error) {
       return res.sendStatus(400);

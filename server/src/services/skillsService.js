@@ -36,16 +36,7 @@ const exposeServices = {
       throw error;
     }
   },
-  patchSkill: async ({ id, data }) => {
-    try {
-      const patchedSkill = await Skills.findOneAndUpdate({ _id: id }, data, {
-        new: true,
-      });
-      return patchedSkill;
-    } catch (error) {
-      throw error;
-    }
-  },
+
   deleteSkill: async ({ id }) => {
     try {
       const deletedSkill = await Skills.findOneAndDelete({ _id: id });

@@ -1,12 +1,21 @@
 import Projects from "#src/models/Projects";
+import queryBuilder from "#src/utils/mongoQueryBuilder";
 
 const exposeServices = {
-  findAllProjects: async () => {
+  findAllProjects: async (query) => {
+    const { filter, projection, options } = queryBuilder.getFindOptions({
+      query,
+    });
+
     try {
-      const allProjects = await Projects.find().populate("users");
+      const allProjects = await Projects.find(
+        filter,
+        projection,
+        options
+      ).populate("users");
       return allProjects;
     } catch (error) {
-      throw error;
+      throw new Error(error);
     }
   },
   createProject: async (rawData) => {
@@ -26,7 +35,7 @@ const exposeServices = {
       throw error;
     }
   },
-  updateProject: async ({ id, data }) => {
+  updateProject: async (id, data) => {
     try {
       const updatedProject = await Projects.findOneAndUpdate(
         { _id: id },
@@ -40,7 +49,7 @@ const exposeServices = {
       throw error;
     }
   },
-  patchProject: async ({ id, data }) => {
+  patchProject: async (id, data) => {
     try {
       const patchedProject = await Projects.findOneAndUpdate(
         { _id: id },
@@ -60,6 +69,16 @@ const exposeServices = {
       return deletedProject;
     } catch (error) {
       throw error;
+    }
+  },
+  countProjects: async (query) => {
+    const { filter } = queryBuilder.getFindOptions({ query });
+
+    try {
+      const howManyProjects = await Projects.countDocuments(filter);
+      return howManyProjects;
+    } catch (error) {
+      throw new Error(error);
     }
   },
 };

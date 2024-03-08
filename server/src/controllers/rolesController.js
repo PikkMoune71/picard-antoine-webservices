@@ -9,12 +9,12 @@ const exposeController = {
     };
   },
   allRoles: async (req, res) => {
-    const allRoles = await rolesService.findAllRoles();
-    return res.json(allRoles);
+    const allRoles = await rolesService.allRoles();
+    res.json(allRoles);
   },
   findOneRole: async (req, res) => {
     const { params } = req;
-    const foundRole = await rolesService.findOneRoleById(params);
+    const foundRole = await rolesService.findOneRole(params);
     if (!foundRole) return res.sendStatus(404);
     return res.json(foundRole);
   },

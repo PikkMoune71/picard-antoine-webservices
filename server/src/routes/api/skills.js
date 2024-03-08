@@ -16,11 +16,6 @@ router.put(
   [authGard.protect, RBAC.authorizationChecker],
   skillsController.updateSkill
 );
-router.patch(
-  "/:id",
-  [authGard.protect, RBAC.authorizationChecker],
-  skillsController.patchSkill
-);
 router.delete(
   "/:id",
   [authGard.protect, RBAC.authorizationChecker],

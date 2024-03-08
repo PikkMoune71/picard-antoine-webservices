@@ -2,15 +2,11 @@ import usersService from "#src/services/usersService";
 
 const exposeController = {
   allUsers: async (req, res) => {
-    // const allUsers = await usersService.findAllUsers();
-    // return res.json(allUsers);
-
-    // all users trier par date de creation la plus recente
-    const allUsers = await usersService.findAllUsers();
-    const sortedUsers = allUsers.sort((a, b) => {
-      return b.createdAt - a.createdAt;
-    });
-    return res.json(sortedUsers);
+    const { query } = req;
+    const allUsers = await usersService.findAllUsers(query);
+    const xCountUser = await usersService.countUsers(query);
+    res.set("X-count", xCountUser);
+    return res.json(allUsers);
   },
   createUser: async (req, res) => {
     const { body } = req;
@@ -34,7 +30,7 @@ const exposeController = {
     const { body } = req;
     const { id } = req.params;
     try {
-      const toUpdate = await creationsService.updateUser({ id, body });
+      const toUpdate = await usersService.updateUser({ id, body });
 
       return res.json(toUpdate);
     } catch (error) {
@@ -46,7 +42,7 @@ const exposeController = {
     const { body } = req;
     const { id } = req.params;
     try {
-      const toPatch = await creationsService.patchUser({ id, body });
+      const toPatch = await usersService.patchUser({ id, body });
       return res.json(toPatch);
     } catch (error) {
       return res.sendStatus(400);

@@ -12,9 +12,9 @@ const exposeMiddleware = {
     const findRessource = authorizations.find(
       ({ ressource }) => ressource == ressourcePath
     );
-    console.log(`controle de ${ressourcePath} en ${method}`, findRessource);
     // on tente de trouver la method
     const isAllowed = findRessource.actions.includes(method);
+    console.log(`controle de ${ressourcePath} en ${method}`, findRessource);
 
     if (isAllowed) {
       return next();
